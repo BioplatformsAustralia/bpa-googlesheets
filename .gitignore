@@ -1,0 +1,11 @@
+.idea/
+__init__.py
+bpagooglesheets.egg-info/
+bpagooglesheets/__pycache__/
+test/
+output/
+.DS_Store
+*.json
+build/
+dist/
+*.env
