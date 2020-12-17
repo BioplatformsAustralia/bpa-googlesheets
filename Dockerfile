@@ -2,16 +2,23 @@
 FROM python:3.8-slim
 LABEL maintainer "https://github.com/bioplatformsaustralia/"
 
-RUN addgroup --gid 1000 bpagooglesheets \
-  && adduser --disabled-password --home /data --no-create-home --system -q --uid 1000 --ingroup bpagooglesheets bpagooglesheets \
-  && mkdir /data \
-  && chown bpagooglesheets:bpagooglesheets /data
+ENV VIRTUAL_ENV /env
+
+RUN addgroup --gid 1000 bioplatforms \
+    && adduser --disabled-password --home /data --no-create-home --system -q --uid 1000 --ingroup bioplatforms bioplatforms \
+    && mkdir /data \
+    && chown bioplatforms:bioplatforms /data \
+    && mkdir /env \
+    && chown bioplatforms:bioplatforms /env
+USER bioplatforms
 
 COPY . /app
-RUN cd /app/bpagooglesheets && pip install --upgrade -r /requirements.txt
+WORKDIR /app
+RUN python3 -m venv $VIRTUAL_ENV \
+    && . $VIRTUAL_ENV/bin/activate \
+    && pip install --upgrade -r requirements.txt
 
 VOLUME /data
-
-USER bpagooglesheets
 ENV HOME /data
-WORKDIR /app/bpagooglesheets
+
+ENTRYPOINT ["/bin/sh"]
