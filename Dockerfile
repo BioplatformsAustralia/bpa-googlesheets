@@ -1,4 +1,3 @@
-#
 FROM python:3.8-slim
 LABEL maintainer "https://github.com/bioplatformsaustralia/"
 
@@ -14,9 +13,7 @@ COPY . /app
 WORKDIR /app
 RUN pip install --upgrade -r requirements.txt && python setup.py install
 
-USER bioplatforms
 VOLUME /data
 ENV HOME /data
 WORKDIR /data
-
-ENTRYPOINT ["/bin/sh"]
+USER bioplatforms
