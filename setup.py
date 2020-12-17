@@ -7,8 +7,8 @@ setup(
     license="GPL3",
     keywords="",
     url="https://github.com/BioplatformsAustralia/bpa-googlesheets",
-    name="bpagooglesheets",
-    version="0.1.3",
+    name="bpa-googlesheets",
+    version="0.1.4",
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     entry_points={
         "console_scripts": [
