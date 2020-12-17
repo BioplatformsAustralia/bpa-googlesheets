@@ -7,11 +7,11 @@ RUN addgroup --gid 1000 bpagooglesheets \
   && mkdir /data \
   && chown bpagooglesheets:bpagooglesheets /data
 
-ADD requirements.txt /
-RUN pip install --upgrade -r /requirements.txt
+COPY . /app
+RUN cd /app/bpagooglesheets && pip install --upgrade -r /requirements.txt
 
 VOLUME /data
 
 USER bpagooglesheets
 ENV HOME /data
-WORKDIR /data
+WORKDIR /app/bpagooglesheets
