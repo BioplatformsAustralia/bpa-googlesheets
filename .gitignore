@@ -9,3 +9,4 @@ output/
 build/
 dist/
 *.env
+data/
