@@ -1,0 +1,22 @@
+sudo: required
+matrix:
+  fast_finish: true
+services:
+- docker
+script: true
+stages:
+- name: build
+  if: tag =~ ^v\d+\.\d+(\.\d+)?(-\S*)?$
+jobs:
+  include:
+  - stage: build
+      script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - chmod 755 ~/.docker
+        - chmod 644 ~/.docker/config.json
+        - export "TRAVIS_TAG=$TRAVIS_TAG"
+        - bash -x ./travis-prodbuild.sh
+env:
+  global:
+  - DOCKER_USERNAME: devredbox
+  - secure: QXieF5A6mgdo2kUctw6Rvi0bwLTwMnHAPXFiJR8FUGwJ9bmi+QUnTz0UVVm6dn5ik1O7WtqaMdHwD3wfTyeJsI1iGiYLdC/KW1i05ljeoEh9JyMfNLUJitM5wJnLC9/v0U0XUmuC+cYH8FOWYcHS8EY9NAPVXsmdulvqLwZptv7yUAf+hk5rv4g4Nv1BchdAL0ETXBFqNxuU9piv9Gmh03TFHRAyGtbEUj5APeDXmfswkyd+wnz4EJqNty5LR+r6XTs7y2/iUdlw5TVmgdPssMKmFuceSdDu4fbvN3V1FLobKkf+R7c7RZU0ejioAzNlnwFNgpj/wBQ5dvbljMCfSYVUtIL+f5RXL/RaptnVG9fD8N0HqppjzMlw+KvLORDDooYD5C5jbaLKwF+0zeOL84rsX7d5qWmXzwOf35JPQ7c47BL1KIM5af0hTHngs6SNs6VUquRN8QFt6dsCF3+WghdqVH88D/LqsBDQVc+CzKnEzyCmc5W/JVPzA2ZG5LTKOThikMGRxqWWwGqJ8bBIVMl4IH0dwJlOPkEbZ4JLFOWdX4wum1FgvwIrXPR2I7LXJ3tvAhhy3b7Ws7Kzt1lxHTjnyiWGXAsc8M4LfvxQNfJEomVDa1OCP1ZT4GVZouCzJ0MCkDBb4k7UkNAcDUmcpxf1vQsuLfh3Cpn9Wf9jI9s=
