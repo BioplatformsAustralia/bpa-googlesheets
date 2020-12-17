@@ -3,7 +3,10 @@ from __future__ import print_function
 import argparse
 import json
 import os
+import pathlib
 import sys
+from datetime import datetime
+import pandas as pd
 
 import numpy as np
 from google.oauth2 import service_account
@@ -17,7 +20,6 @@ from .util import (
 logger = make_logger(__name__)
 register_command, command_fns = make_registration_decorator()
 
-
 def setup_export(subparser):
     subparser.add_argument("target_dir", type=str)
 
@@ -28,18 +30,24 @@ def download_json(args):
         info = json.load(source)
         credentials = service_account.Credentials.from_service_account_info(info)
     service = discovery.build('sheets', 'v4', credentials=credentials)
-    # set extremely large range to capture all potential sheet data
-    request = service.spreadsheets().values().get(spreadsheetId=args.googlesheets_id, range='A1:AA1000')
+    request = service.spreadsheets().values().get(spreadsheetId=args.googlesheets_id, range='A1:L1000')
+
     response = request.execute()
+    logger.info(f"response is: {response}")
     if not response or not response['values']:
         raise Exception(
             "Unable to retrieve googlespreadsheets data from API, using spreadsheet_id: {0}".format(
                 args.googlesheets_id))
+    # pandas allows us to see empty and blank values to convert to common value
+    df = pd.DataFrame(response['values'])
+    df_with_no_nulls = df.replace([None], [''])
+    df_sanitised = df_with_no_nulls.replace(regex={r'\n': ','})
+    processed_dataset = df_sanitised.values.tolist()
     # validate that data is a 2D array (or list of arrays)
     logger.info("Validating data as numpy data...")
-    validate_as_numpy(response['values'])
+    validate_as_numpy(processed_dataset)
     backup_exising_googlesheet(args)
-    write_result_as_json(args, response['values'])
+    write_result_as_json(args, processed_dataset)
 
 
 def backup_exising_googlesheet(args):
@@ -48,8 +56,12 @@ def backup_exising_googlesheet(args):
         result = open_valid_googlesheet_file(args.target_path)
         validate_as_numpy(result)
         logger.info("Existing target path contains valid numpy data. Backing up file...")
-        backup_path_parts = os.path.splitext(args.target_path)
-        backup_path = backup_path_parts[0] + "-backup" + backup_path_parts[1]
+        # create backup path in its own 'backups' folder and filename using datetimestamp
+        backup_path_ext_parts = os.path.splitext(args.target_path)
+        backup_path_parts = os.path.split(backup_path_ext_parts[0])
+        backup_dir = os.path.join(backup_path_parts[0], "backups")
+        pathlib.Path(backup_dir).mkdir(parents=True, exist_ok=True)
+        backup_path = os.path.join(backup_dir, backup_path_parts[1] + datetime.now().strftime("-%d%m%Y-%H%M%S") + backup_path_ext_parts[1])
         os.rename(args.target_path, backup_path)
         logger.info(f"Existing target path successfully moved to {backup_path}")
 
@@ -103,12 +115,13 @@ def commands():
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument("--version", action="store_true", help="print version and exit")
     parser.add_argument("-c", "--credentials-path", help="credentials json file for accessing googlesheets API",
-                        default="/opt/Bioplatforms-1-4ce44a8bb736.json")
+                        default="/opt/Bioplatforms-googlesheet-credentials.json")
     parser.add_argument("-i", "--googlesheets-id", help="googlsheets ID")
-    parser.add_argument("-t", "--target-path", help="target path to download json to", default="/tmp/googlesheet.json")
+    parser.add_argument("-t", "--target-path", help="target path to download json to",
+                        default="/tmp/googlesheets/summary_table_data_path.json")
 
     subparsers = parser.add_subparsers(dest="name")
     for name, fn, help_text in sorted(commands()):
