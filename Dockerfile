@@ -16,4 +16,3 @@ RUN pip install --upgrade -r requirements.txt && python setup.py install
 VOLUME /data
 ENV HOME /data
 WORKDIR /data
-USER bioplatforms

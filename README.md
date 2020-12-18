@@ -14,7 +14,7 @@ docker build -t bioplatformsaustralia/bpagooglesheets .
 ### Example run:
 In the following example the local directory 'data' is used to hold the credentials key and to write output:
 ```
-docker run -it --rm -v /Users/matthewmulholland/apps/projects/bpa/bpa-googlesheets/data:/data bioplatformsaustralia/bpagooglesheets:bioplatforms bpa-googlesheets -i 19ZTNrCr -c /data/Bioplatforms-googlesheet-credentials.json -t /data/googlesheets/summary_table_data_path.json
+docker run -it --rm -v /data/googlesheets:/data bioplatformsaustralia/bpagooglesheets:bioplatforms bpa-googlesheets -i 19ZTNrCr -c /data/Bioplatforms-googlesheet-credentials.json -t /data/output/summary_table_data_path.json
 ```
 
 ## With command-line:
