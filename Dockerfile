@@ -6,7 +6,7 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN addgroup --gid 1000 bioplatforms \
     && adduser --disabled-password --home /data --no-create-home --system -q --uid 1000 --ingroup bioplatforms bioplatforms \
-    && mkdir /data \
+    && mkdir /data /env \
     && chown bioplatforms:bioplatforms /data /env
 
 RUN pip install --upgrade virtualenv pip
