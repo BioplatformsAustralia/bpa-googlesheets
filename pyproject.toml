@@ -7,6 +7,9 @@ license = "GPL3"
 homepage = "https://github.com/BioplatformsAustralia/bpa-googlesheets"
 authors = ["Matthew Mulholland <matt@redboxresearchdata.com.au> <info@redboxresearchdata.com.au>"]
 
+[tool.poetry.scripts]
+bpa-googlesheets = 'bpagooglesheets.cli:main'
+
 [tool.poetry.dependencies]
 python = ">=3.6.1"
 black = "==19.10b0"
