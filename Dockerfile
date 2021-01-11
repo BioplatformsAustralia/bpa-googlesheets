@@ -9,7 +9,7 @@ RUN addgroup --gid 1000 bioplatforms \
     && mkdir /data \
     && chown bioplatforms:bioplatforms /data
 
-RUN apt-get update && apt-get install -y install cmake
+RUN apt-get update && apt-get install -y cmake
 
 COPY . /app
 WORKDIR /app
