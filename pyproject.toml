@@ -1,6 +1,6 @@
 [tool]
 [tool.poetry]
-name = "bpa-googlesheets"
+name = "bpagooglesheets"
 version = "1.0.3"
 description = "Download Googlesheet using Googlesheets API credentials"
 license = "GPL3"

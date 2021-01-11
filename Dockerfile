@@ -9,7 +9,7 @@ RUN addgroup --gid 1000 bioplatforms \
     && mkdir /data /env \
     && chown bioplatforms:bioplatforms /data /env
 
-RUN pip install --upgrade virtualenv pip
+RUN pip install --upgrade pip
 
 USER bioplatforms
 
@@ -17,7 +17,7 @@ ENV VIRTUAL_ENV /env
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ENV PIP_NO_CACHE_DIR "off"
 ENV PYTHONUNBUFFERED 1
-RUN virtualenv $VIRTUAL_ENV
+RUN python -m venv $VIRTUAL_ENV
 
 COPY . /app
 WORKDIR /app
