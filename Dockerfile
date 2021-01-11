@@ -15,11 +15,9 @@ USER bioplatforms
 
 ENV VIRTUAL_ENV /env
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-
-# create a virtual env in $VIRTUAL_ENV and ensure it respects pip version
-RUN virtualenv $VIRTUAL_ENV && $VIRTUAL_ENV/bin/pip install
 ENV PIP_NO_CACHE_DIR "off"
 ENV PYTHONUNBUFFERED 1
+RUN virtualenv $VIRTUAL_ENV
 
 COPY . /app
 WORKDIR /app
