@@ -1,0 +1,15 @@
+[tool]
+[tool.poetry]
+name = "bpa-googlesheets"
+version = "1.0.2"
+description = "Download Googlesheet using Googlesheets API credentials"
+license = "GPL3"
+homepage = "https://github.com/BioplatformsAustralia/bpa-googlesheets"
+authors = ["Matthew Mulholland <matt@redboxresearchdata.com.au> <info@redboxresearchdata.com.au>"]
+
+[tool.poetry.dependencies]
+python = "*"
+black = "==19.10b0"
+google-api-python-client = "==1.12.8"
+numpy = "==1.19.4"
+pandas = "==1.1.5"
