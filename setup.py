@@ -8,7 +8,7 @@ setup(
     keywords="",
     url="https://github.com/BioplatformsAustralia/bpa-googlesheets",
     name="bpa-googlesheets",
-    version="1.0.1",
+    version="1.1.0",
     packages=find_packages(exclude=["*.tests", "*.tests.*", "tests.*", "tests"]),
     entry_points={
         "console_scripts": [

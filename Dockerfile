@@ -9,6 +9,8 @@ RUN addgroup --gid 1000 bioplatforms \
     && mkdir /data \
     && chown bioplatforms:bioplatforms /data
 
+RUN apt-get update && apt-get install -y install cmake
+
 COPY . /app
 WORKDIR /app
 RUN pip install --upgrade -r requirements.txt && python setup.py install
