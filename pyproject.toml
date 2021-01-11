@@ -8,7 +8,7 @@ homepage = "https://github.com/BioplatformsAustralia/bpa-googlesheets"
 authors = ["Matthew Mulholland <matt@redboxresearchdata.com.au> <info@redboxresearchdata.com.au>"]
 
 [tool.poetry.dependencies]
-python = "*"
+python = ">=3.6.1"
 black = "==19.10b0"
 google-api-python-client = "==1.12.8"
 numpy = "==1.19.4"
