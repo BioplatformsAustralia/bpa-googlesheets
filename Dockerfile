@@ -11,6 +11,7 @@ RUN addgroup --gid 1000 bioplatforms \
 
 COPY . /app
 WORKDIR /app
+RUN pip install poetry
 RUN poetry install
 
 VOLUME /data
