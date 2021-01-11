@@ -3,6 +3,8 @@ LABEL maintainer "https://github.com/bioplatformsaustralia/"
 
 ENV VIRTUAL_ENV /env
 ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+ENV PIP_NO_CACHE_DIR "off"
+ENV PYTHONUNBUFFERED 1
 
 RUN addgroup --gid 1000 bioplatforms \
     && adduser --disabled-password --home /data --no-create-home --system -q --uid 1000 --ingroup bioplatforms bioplatforms \
@@ -12,13 +14,9 @@ RUN addgroup --gid 1000 bioplatforms \
 RUN pip install --upgrade pip
 
 USER bioplatforms
-
-ENV VIRTUAL_ENV /env
-ENV PATH="$VIRTUAL_ENV/bin:$PATH"
-ENV PIP_NO_CACHE_DIR "off"
-ENV PYTHONUNBUFFERED 1
+RUN echo "virtual env is ${VIRTUAL_ENV}"
+RUN echo "path is ${PATH}"
 RUN python -m venv $VIRTUAL_ENV
-
 COPY . /app
 WORKDIR /app
 RUN pip install poetry
