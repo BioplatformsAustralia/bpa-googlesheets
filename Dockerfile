@@ -14,8 +14,6 @@ RUN addgroup --gid 1000 bioplatforms \
 RUN pip install --upgrade pip
 
 USER bioplatforms
-RUN echo "virtual env is ${VIRTUAL_ENV}"
-RUN echo "path is ${PATH}"
 RUN python -m venv $VIRTUAL_ENV
 COPY . /app
 WORKDIR /app
