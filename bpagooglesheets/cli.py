@@ -31,7 +31,7 @@ def download_json(args):
     request = (
         service.spreadsheets()
         .values()
-        .get(spreadsheetId=args.googlesheets_id, range="A1:L1000")
+        .get(spreadsheetId=args.googlesheets_id, range="A1:M1000")
     )
 
     response = request.execute()
